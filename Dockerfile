@@ -35,9 +35,6 @@ RUN autoreconf -fvi \
 #Run Dynomite	
 RUN src/dynomite -h
 
-#Display the dynomite version
-RUN src/dynomite -v
-	
 ## Installation Ends ##
 
 #Expose the peer ports
