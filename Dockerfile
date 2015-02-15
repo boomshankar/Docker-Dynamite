@@ -1,4 +1,13 @@
+##########################################################################
+# Dockerfile to build Dynomite 
+# Based on Ubuntu
+##########################################################################
+
+#Set the base image to Ubuntu
 FROM ubuntu
+
+#File Author / Maintainer
+MAINTAINER Novjean Kannathara - Email: nkannath@purdue.edu
 
 # Update the repository sources list and Install package Build Essential
 RUN apt-get update && apt-get install -y \
@@ -9,11 +18,7 @@ RUN apt-get update && apt-get install -y \
 	libssl-dev \
 	libtool \
 	python-software-properties \
-	redis-server \
 	tcl8.5
-
-# Get Redis Running
-RUN service redis-server start
 
 # Clone the Dynomite Git
 RUN git clone https://github.com/Netflix/dynomite.git
@@ -26,20 +31,17 @@ WORKDIR dynomite/
 RUN autoreconf -fvi \
 	&& ./configure --enable-debug=log \
 	&& make
+
+#Run Dynomite	
+RUN src/dynomite -h
+
+#Display the dynomite version
+RUN src/dynomite -v
 	
 ## Installation Ends ##
 
-# Expose the peer port
-RUN echo 'Exposing peer port 8101'
-EXPOSE 8101
+#Expose the peer ports
+Expose 8101
 
-# Exposing the ports
-RUN echo 'Exposing client port for Dynomite'
-EXPOSE 8102
-
-# Default port to execute the entrypoint (Dynomite)
-CMD ["--port 8102"]
-
-# Setting the dynomite as the dockerized entry-point application
-RUN echo 'Starting Dynomite'
-RUN src/dynomite --conf-file=conf/redis_single.yml -v11
+#Entrypoint
+ENTRYPOINT ["src/dynomite", "-c", "conf/dynomite.yml", "-v", "11"]
