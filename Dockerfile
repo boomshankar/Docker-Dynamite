@@ -40,5 +40,9 @@ RUN src/dynomite -h
 #Expose the peer ports
 Expose 8101
 
+#Command to run in that port
+CMD ["--8102"]
+
 #Entrypoint
+RUN echo ip addr show
 ENTRYPOINT ["src/dynomite", "-c", "conf/dynomite.yml", "-v", "11"]
