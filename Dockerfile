@@ -32,17 +32,13 @@ RUN autoreconf -fvi \
 	&& ./configure --enable-debug=log \
 	&& make
 
+## Installation Ends ##
+
 #Run Dynomite	
 RUN src/dynomite -h
 
-## Installation Ends ##
-
 #Expose the peer ports
-Expose 8101
+#Expose 8101
 
-#Command to run in that port
-CMD ["--8102"]
-
-#Entrypoint
-RUN echo ip addr show
-ENTRYPOINT ["src/dynomite", "-c", "conf/dynomite.yml", "-v", "11"]
+#RUN echo ip addr show
+#ENTRYPOINT ["src/dynomite", "-c", "conf/dynomite.yml", "-v", "11"]
